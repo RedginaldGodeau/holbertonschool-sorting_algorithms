@@ -9,7 +9,7 @@
 */
 void selection_sort(int *array, size_t size)
 {
-    size_t i = 0, i2 = 0, l;
+    size_t i = 0, i2 = 0;
     int idx, tmp;
 
     for (; i < size - 1; i++)
@@ -19,20 +19,13 @@ void selection_sort(int *array, size_t size)
         for (i2 = i + 1; i2 < size; i2++)
             if (array[idx] > array[i2])
                 idx = i2;
+        
         if (idx != (int) i)
-        {
-            for (l = 0; l < size; l++)
-            {
-                printf("%d", array[l]);
-                if(l < size-1)
-                    printf(", ");
-                else
-                    printf("\n");
-            }
-            
+        {    
             tmp = array[i];
             array[i] = array[idx];
             array[idx] = tmp;
+            print_array(array, size);
         }
     }
 }
