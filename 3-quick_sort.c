@@ -1,44 +1,62 @@
 #include "sort.h"
 
 /**
+ * swap - void return O(n^2)
+ * Description: Sort Number in list
+ * @a: int pointer
+ * @b: size_t start number in array
+*/
+void swap(int *a, int *b)
+{
+	int tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+/**
+ * partition - int return O(n^2)
+ * Description: Sort and check number
+ * Return: i + 1 (int)
+ * @array: int pointer
+ * @low: size_t start number in array
+ * @high: size_t end number in array
+ * @size: size of array
+ */
+int partition(int *array, size_t low, size_t high, size_t size)
+{
+	const int pivot = array[high];
+	size_t i = (low - 1), i2 = low;
+
+	for (; i2 <= high - 1; i2++)
+	{
+		if (array[i2] < pivot)
+		{
+			i2++;
+			swap(&array[i], &array[i2]);
+			print_array(array, size);
+		}
+	}
+	swap(&array[i + 1], &array[high]);
+	print_array(array, size);
+	return (i + 1);
+}
+/**
  * sort - void return O(n^2)
  * Description: Sort Number in list
  * @array: int pointer
- * @start: size_t start number in array
- * @end: size_t end number in array
+ * @low: size_t start number in array
+ * @high: size_t end number in array
  * @size: size of array
-*/
-void sort(int *array,size_t first,size_t last, size_t size){
-    const size_t pivot = first;
-    size_t start = first, end = last;
-    int tmp;
+ */
+void sort(int *array, size_t low, size_t high, size_t size) {
+	int pi;
 
-    if (first >= last)
-        return;
+	if (low < high) {
+		pi = partition(array, low, high, size);
+		sort(array, low, pi - 1, size);
+		sort(array, pi + 1, high, size);
+	}
 
-    while (start < end)
-    {
-        while (array[start] <= array[pivot] && start < last)
-            start++;
-        while (array[end] > array[pivot])
-            end--;
-        
-        if (start < end)
-        {
-            tmp = array[start];
-            array[start] = array[end];
-            array[end] = tmp;
-
-            print_array(array, size);
-        }
-    }
-
-    tmp = array[pivot];
-    array[pivot] = array[end];
-    array[end] = tmp;
-
-    sort(array, first, end - 1, size);
-    sort(array, end + 1, last, size);
 }
 
 /**
@@ -49,5 +67,5 @@ void sort(int *array,size_t first,size_t last, size_t size){
  */
 void quick_sort(int *array, size_t size)
 {
-    sort(array, 0, size - 1, size);
+	sort(array, 0, size - 1, size);
 }
