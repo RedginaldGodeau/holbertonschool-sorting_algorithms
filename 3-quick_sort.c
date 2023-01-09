@@ -1,64 +1,56 @@
 #include "sort.h"
-
 /**
- * swap - void return O(n^2)
+ * echanger - void return
  * Description: Sort Number in list
- * @a: int pointer
- * @b: size_t start number in array
-*/
-void swap(int *a, int *b)
+ * @tableau: int pointer
+ * @a: size_t of array
+ * @b: size_t of array
+ */
+void echanger(int tableau[], int a, int b)
 {
-	int tmp = *a;
-	*a = *b;
-	*b = tmp;
+	int temp = tableau[a];
+
+	tableau[a] = tableau[b];
+	tableau[b] = temp;
 }
 
 /**
- * partition - int return O(n^2)
- * Description: Sort and check number
- * Return: i + 1 (int)
- * @array: int pointer
- * @low: size_t start number in array
- * @high: size_t end number in array
- * @size: size of array
+ * quickSort - void return
+ * Description: Sort Number in list
+ * @tableau: int pointer
+ * @size: size_t of array
+ * @fin: size_t of array
+ * @debut: size_t of array
  */
-int partition(int *array, size_t low, size_t high, size_t size)
+void quickSort(int tableau[], int debut, int fin, size_t size)
 {
-	const int pivot = array[high];
-	size_t i = (low - 1), i2 = low;
+	const int pivot = tableau[debut];
+	int gauche = debut - 1;
+	int droite = fin + 1;
 
-	for (; i2 <= high - 1; i2++)
+	if (debut >= fin)
+		return;
+
+	while (1)
 	{
-		if (array[i2] < pivot)
+		do
+			droite--;
+		while (tableau[droite] > pivot);
+		do
+			gauche++;
+		while (tableau[gauche] < pivot);
+
+		if (gauche < droite)
 		{
-			i2++;
-			swap(&array[i], &array[i2]);
-			print_array(array, size);
+			echanger(tableau, gauche, droite);
+			print_array(tableau, size);
 		}
+		else
+			break;
 	}
-	swap(&array[i + 1], &array[high]);
-	print_array(array, size);
-	return (i + 1);
+	quickSort(tableau, debut, droite, size);
+	quickSort(tableau, droite + 1, fin, size);
 }
-/**
- * sort - void return O(n^2)
- * Description: Sort Number in list
- * @array: int pointer
- * @low: size_t start number in array
- * @high: size_t end number in array
- * @size: size of array
- */
-void sort(int *array, size_t low, size_t high, size_t size) {
-	int pi;
-
-	if (low < high) {
-		pi = partition(array, low, high, size);
-		sort(array, low, pi - 1, size);
-		sort(array, pi + 1, high, size);
-	}
-
-}
-
 /**
  * quick_sort - void return
  * Description: Sort Number in list
@@ -67,5 +59,5 @@ void sort(int *array, size_t low, size_t high, size_t size) {
  */
 void quick_sort(int *array, size_t size)
 {
-	sort(array, 0, size - 1, size);
+	quickSort(array, 0, size - 1, size);
 }
